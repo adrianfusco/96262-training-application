@@ -36,7 +36,20 @@ services:
       - 9100
     networks:
       - monitor
-
+  # --
+  grafana:
+    image: grafana/grafana:9.2.2
+    container_name: grafana-monitor
+    volumes:
+      - data-grafana:/var/lib/grafana
+      - ./data/grafana/provisioning:/etc/grafana/provisioning
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USER:?GRAFANA_ADMIN_USER is unset or null}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:?GRAFANA_ADMIN_PASSWORD is unset or null}
+    expose:
+      - 3000
+    networks:
+      - monitor
 networks:
   monitor:
     driver: bridge
