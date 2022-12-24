@@ -1,0 +1,28 @@
+# This file should be placed as /etc/filebeat/fileabeat.yml
+
+filebeat.inputs:
+  - type: log
+    paths:
+      - /var/log/httpd/vhost.log
+    fields:
+      log_source: apache_test 
+
+output.logstash:
+  hosts: ["logstash:5044"]
+
+monitoring.enabled: false
+logging.metrics.enabled: false
+ignore_older: 10m
+filebeat.registry.flush: 120s
+
+# limit number of active threads for filebeat to avoid overloading the machine  
+max_procs: 2  
+
+logging.level: warning
+logging.metrics.enabled: false
+logging.to_files: true
+logging.files:
+  path: /var/log/filebeat
+  name: filebeat
+  keepfiles: 7
+  permissions: 0644
